@@ -24,11 +24,11 @@ public class Sprite extends ImageView {
 
     boolean dead = false;
     final String type;
-    int speed = 20;
+    double speed = 2;
     public static ArrayList<Sprite> collisions = new ArrayList<>();
     public static ArrayList<Sprite> players = new ArrayList<Sprite>();
     FileInputStream fis;
-    Image img, leftWalk, rightWalk;
+    Image img, leftWalk, rightWalk, deadAnimation;
 
     Sprite(int x, int y, String type, Color color) {
         if (!type.equals("wall")) {
@@ -40,6 +40,8 @@ public class Sprite extends ImageView {
                 leftWalk = new Image(fis, 50, 50, false, false);
                 this.fis = new FileInputStream("char_walk_right.gif");
                 rightWalk = new Image(fis, 50, 50, false, false);
+                this.fis = new FileInputStream("dead.gif");
+                deadAnimation = new Image(fis, 50, 50, false, false);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Sprite.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -49,13 +51,11 @@ public class Sprite extends ImageView {
         setX(x);
         setY(y);
     }
-    
-   
 
     void moveLeft() {
         setX(getX() - speed);
         this.setImage(leftWalk);
-        
+
     }
 
     void moveRight() {
