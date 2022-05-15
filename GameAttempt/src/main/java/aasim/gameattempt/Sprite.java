@@ -24,8 +24,9 @@ public class Sprite extends ImageView {
 
     boolean dead = false;
     final String type;
-    int speed = 1;
+    int speed = 20;
     public static ArrayList<Sprite> collisions = new ArrayList<>();
+    public static ArrayList<Sprite> players = new ArrayList<Sprite>();
     FileInputStream fis;
     Image img, leftWalk, rightWalk;
 
@@ -48,20 +49,21 @@ public class Sprite extends ImageView {
         setX(x);
         setY(y);
     }
+    
+   
 
     void moveLeft() {
-        this.setImage(leftWalk);
         setX(getX() - speed);
-
+        this.setImage(leftWalk);
+        
     }
 
     void moveRight() {
-        this.setImage(rightWalk);
         setX(getX() + speed);
+        this.setImage(rightWalk);
     }
 
     void moveUp() {
-
         setY(getY() - speed);
     }
 
