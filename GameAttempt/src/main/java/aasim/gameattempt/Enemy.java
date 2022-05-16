@@ -19,6 +19,9 @@ public class Enemy extends Sprite {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                if (dead) {
+                    this.stop();
+                }
                 update();
             }
         };
@@ -36,10 +39,7 @@ public class Enemy extends Sprite {
     double angle = Math.sin(C);//angle that the player is from enemy
 
     private void update() {
-        if (this.dead) {
-            
-            return;
-        }
+
         for (Sprite x : this.players) {
             playerX = x.getX();
             playerY = x.getY();

@@ -31,14 +31,20 @@ public class Attack extends Sprite {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                if (!isVisible()) {
+                    this.stop();
+                    removeAttackFromCollision();
+                }
                 update();
             }
+
         };
 
         timer.start();
     }
 
     private void update() {
+
         for (Sprite x : collisions) {
             if (x != this) {
                 if (x.intersects(this.getBoundsInParent())) {
@@ -47,5 +53,10 @@ public class Attack extends Sprite {
                 }
             }
         }
+
+    }
+
+    private void removeAttackFromCollision() {
+        Sprite.collisions.remove(this);
     }
 }

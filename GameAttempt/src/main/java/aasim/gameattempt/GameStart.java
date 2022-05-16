@@ -131,6 +131,7 @@ public class GameStart extends Application {
             PauseTransition hideCircle = new PauseTransition(Duration.seconds(1));
             hideCircle.setOnFinished(eh -> {
                 a1.setVisible(false);
+                Sprite.collisions.remove(a1);
                 line.setVisible(false);
                 line2.setVisible(false);
             });
