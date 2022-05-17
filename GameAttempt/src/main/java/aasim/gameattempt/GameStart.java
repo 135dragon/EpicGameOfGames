@@ -93,6 +93,7 @@ public class GameStart extends Application {
                 case S:
                     downPressed = true;
                     break;
+               
             }
         });
         scene.setOnKeyReleased(e -> {

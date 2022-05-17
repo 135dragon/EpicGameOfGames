@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.util.Duration;
-
+import java.util.Random;
 /**
  *
  * @author 14048
@@ -38,12 +38,15 @@ public class Enemy extends Sprite {
     double screenX = Screen.getPrimary().getBounds().getWidth();
     double screenY = Screen.getPrimary().getBounds().getHeight();
     double playerX, playerY;
-    //double C = Math.abs(this.getX()-playerX)/(Math.abs(this.getY()-playerY));//used to determine angle 
     double xDist = Math.abs(this.getX() - playerX);
     double yDist = Math.abs(this.getY() - playerY);
+    Random rand = new Random();
+    
 
     //double angle = Math.sin(C);//angle that the player is from enemy
     private void update() {
+    	double xDist = Math.abs(this.getX() - playerX);
+        double yDist = Math.abs(this.getY() - playerY);
         if (dead) {
             if (!this.getImage().equals(deadAnimation)) {
                 this.setImage(deadAnimation);
@@ -63,37 +66,53 @@ public class Enemy extends Sprite {
             playerY = x.getY();
 
         }
+        
 
         //ENEMY AI
-        /*
-         * if (this.getX() > 0 && goLeft) { this.moveLeft(); } else { goLeft =
-         * false; }
-         *
-         * if (this.getX() < screenX - 25 && !goLeft) {
-         * this.moveRight();
-         * } else {
-         * goLeft = true;
-         * }
-         *
-         * if (this.getY() > 0 && goUp) { this.moveUp(); } else { goUp = false;
-         * }
-         *
-         * if (this.getY() < screenY - 50 && !goUp) { this.moveDown(); } else {
-         * goUp = true; }
-         *
-         */
-        if (playerY > this.getY()) {
-            this.moveDown();
+        System.out.println(yDist);
+        if(xDist<300 && yDist<300) {
+        	aware();
         }
-        if (playerY < this.getY()) {
-            this.moveUp();
+        else {
+        	unaware();
         }
-        if (playerX > this.getX()) {
-            this.moveRight();
+        	   /**
+		        if (playerY > this.getY()) {
+		            this.moveDown();
+		        }
+		        if (playerY < this.getY()) {
+		            this.moveUp();
+		        }
+		        if (playerX > this.getX()) {
+		            this.moveRight();
+		        }
+		        if (playerX < this.getX()) {
+		            this.moveLeft();
+		        }
+        **/
+        
+        
+       // Enemy POV (visibility)
+        
+        for (Sprite x : POV) {
+        	if(x != this) {
+        		 if (x.intersects(this.getBoundsInParent())) {
+                     double differenceX = x.getX() - this.getX();
+                     double differenceY = x.getY() - this.getY();
+                     if (differenceX > 10) {//will stop enemies and players from colliding, unless walked into for now
+                         while (x.intersects(this.getBoundsInParent())) {
+                        	 
+                        	 
+                         }
+                     }
+        	
         }
-        if (playerX < this.getX()) {
-            this.moveLeft();
+        	}
         }
+        	
+        
+       
+        
         // Collisions
 
         for (Sprite x : collisions) {
@@ -130,7 +149,46 @@ public class Enemy extends Sprite {
             }
         }
     }
-
+    //enemy unaware
+    public void unaware() {
+    	int unawareDirection = rand.nextInt(5);
+    	switch(unawareDirection) {
+    	case 1:
+    		this.moveLeft();
+    		unaware();
+    		break;
+    	case 2:
+    		this.moveRight();
+    		unaware();
+    		break;
+    	case 3:
+    		this.moveUp();
+    		unaware();
+    		break;
+    	case 4:
+    		this.moveDown();
+    		unaware();
+    		break;
+    	}
+    	
+    }
+    
+    //enemy aware
+    public void aware() {
+    	if (playerY > this.getY()) {
+            this.moveDown();
+        }
+        if (playerY < this.getY()) {
+            this.moveUp();
+        }
+        if (playerX > this.getX()) {
+            this.moveRight();
+        }
+        if (playerX < this.getX()) {
+            this.moveLeft();
+        }
+    }
+    
     public void setSpeed(double speed) {
         this.speed = speed;
     }

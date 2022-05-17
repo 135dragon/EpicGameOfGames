@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
+import java.util.*;
 
 /**
  *
@@ -24,8 +25,11 @@ public class Sprite extends ImageView {
 
     boolean dead = false;
     double speed = 2;
+    Random rand = new Random();
     public static ArrayList<Sprite> collisions = new ArrayList<>();
+    public static ArrayList<Sprite> POV = new ArrayList<>();
     public static ArrayList<Sprite> players = new ArrayList<Sprite>();
+    
     FileInputStream fis;
     Image img;
     Image leftWalk, rightWalk, deadAnimation;
@@ -82,4 +86,7 @@ public class Sprite extends ImageView {
         }
         setY(getY() + speed);
     }
+
+	
 }
+
