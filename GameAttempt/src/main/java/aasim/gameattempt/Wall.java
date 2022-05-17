@@ -15,10 +15,29 @@ public class Wall extends Sprite {
 
     Rectangle hitbox;
 
-    public Wall(int x, int y, int w, int h, String type, Color color) {
-        super(x, y, "wall", color);
-        
+    public Wall(int x, int y) {
+        super(x, y);
         Sprite.collisions.add(this);
+    }
+
+    @Override
+    void moveDown() {
+        return;
+    }
+
+    @Override
+    void moveLeft() {
+        return;
+    }
+
+    @Override
+    void moveRight() {
+        return;
+    }
+
+    @Override
+    void moveUp() {
+        return;
     }
 
 }

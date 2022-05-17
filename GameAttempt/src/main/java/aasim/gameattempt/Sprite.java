@@ -23,51 +23,63 @@ import javafx.scene.transform.Rotate;
 public class Sprite extends ImageView {
 
     boolean dead = false;
-    final String type;
     double speed = 2;
     public static ArrayList<Sprite> collisions = new ArrayList<>();
     public static ArrayList<Sprite> players = new ArrayList<Sprite>();
     FileInputStream fis;
-    Image img, leftWalk, rightWalk, deadAnimation;
+    Image img;
+    Image leftWalk, rightWalk, deadAnimation;
+    boolean stunned = false;
+    int height = 40, width = 30; //Aspect ratio is 4/3
 
-    Sprite(int x, int y, String type, Color color) {
-        if (!type.equals("wall")) {
-            try {
-                this.fis = new FileInputStream("char_walk_left.gif");
-                img = new Image(fis, 50, 50, false, false);
-                this.setImage(img);
-                this.fis = new FileInputStream("char_walk_left.gif");
-                leftWalk = new Image(fis, 50, 50, false, false);
-                this.fis = new FileInputStream("char_walk_right.gif");
-                rightWalk = new Image(fis, 50, 50, false, false);
-                this.fis = new FileInputStream("dead.gif");
-                deadAnimation = new Image(fis, 50, 50, false, false);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Sprite.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    Sprite(double x, double y) {
+//        super(new Image("https://w7.pngwing.com/pngs/34/292/png-transparent-sunglasses-thug-life-cool-miscellaneous-angle-white.png")); //random image, change later
+        try {
+            this.fis = new FileInputStream("char_walk_left.gif");
+            img = new Image(fis, width, height, false, false);
+            this.setImage(img);
+            this.fis = new FileInputStream("char_walk_left.gif");
+            leftWalk = new Image(fis, width, height, false, false);
+            this.fis = new FileInputStream("char_walk_right.gif");
+            rightWalk = new Image(fis, width, height, false, false);
+            this.fis = new FileInputStream("dead.gif");
+            deadAnimation = new Image(fis, width, height, false, false);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Sprite.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         collisions.add(this);
-        this.type = type;
         setX(x);
         setY(y);
     }
 
     void moveLeft() {
+        if (stunned || dead) {
+            return;
+        }
         setX(getX() - speed);
         this.setImage(leftWalk);
-
     }
 
     void moveRight() {
+        if (stunned || dead) {
+            return;
+        }
         setX(getX() + speed);
         this.setImage(rightWalk);
     }
 
     void moveUp() {
+        if (stunned || dead) {
+            return;
+        }
         setY(getY() - speed);
     }
 
     void moveDown() {
+        if (stunned || dead) {
+            return;
+        }
         setY(getY() + speed);
     }
 }

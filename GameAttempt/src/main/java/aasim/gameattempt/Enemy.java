@@ -5,8 +5,11 @@
 package aasim.gameattempt;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.PauseTransition;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
+import javafx.util.Duration;
 
 /**
  *
@@ -14,8 +17,8 @@ import javafx.stage.Screen;
  */
 public class Enemy extends Sprite {
 
-    public Enemy(int x, int y, String type, Color color) {
-        super(x, y, type, color);
+    public Enemy(int x, int y) {
+        super(x, y);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -35,10 +38,25 @@ public class Enemy extends Sprite {
     double screenX = Screen.getPrimary().getBounds().getWidth();
     double screenY = Screen.getPrimary().getBounds().getHeight();
     double playerX, playerY;
-    double C = Math.abs(this.getX() - playerX) / (Math.abs(this.getY() - playerY));//used to determine angle 
-    double angle = Math.sin(C);//angle that the player is from enemy
+    //double C = Math.abs(this.getX()-playerX)/(Math.abs(this.getY()-playerY));//used to determine angle 
+    double xDist = Math.abs(this.getX() - playerX);
+    double yDist = Math.abs(this.getY() - playerY);
 
+    //double angle = Math.sin(C);//angle that the player is from enemy
     private void update() {
+        if (dead) {
+            if (!this.getImage().equals(deadAnimation)) {
+                this.setImage(deadAnimation);
+            }
+            PauseTransition hide = new PauseTransition(Duration.seconds(0.5));
+            hide.setOnFinished(eh -> {
+                this.setVisible(false);
+                ((Pane) this.getScene().getRoot()).getChildren().remove(this);
+                Sprite.collisions.remove(this);
+            });
+            hide.play();
+            return;
+        }
 
         for (Sprite x : this.players) {
             playerX = x.getX();
@@ -75,15 +93,39 @@ public class Enemy extends Sprite {
         }
         if (playerX < this.getX()) {
             this.moveLeft();
-        } else //System.out.println(playerX + ", " + playerY);
+        }
         // Collisions
-        {
-            for (Sprite x : collisions) {
-                if (x != this) {
-                    if (x.intersects(this.getBoundsInParent())) {
-                        goLeft = !goLeft;
-                        goUp = !goUp;
+
+        for (Sprite x : collisions) {
+            if (x != this) {
+                if (x.intersects(this.getBoundsInParent())) {
+                    double differenceX = x.getX() - this.getX();
+                    double differenceY = x.getY() - this.getY();
+                    if (differenceX > 10) {//will stop enemies and players from colliding, unless walked into for now
+                        while (x.intersects(this.getBoundsInParent())) {
+                            this.moveLeft();
+                            x.moveRight();
+                        }
                     }
+                    if (differenceX < -10) {
+                        while (x.intersects(this.getBoundsInParent())) {
+                            this.moveRight();
+                            x.moveLeft();
+                        }
+                    }
+                    if (differenceY > 5) {
+                        while (x.intersects(this.getBoundsInParent())) {
+                            this.moveUp();
+                            x.moveDown();
+                        }
+                    }
+                    if (differenceY < -5) {
+                        while (x.intersects(this.getBoundsInParent())) {
+                            this.moveDown();
+                            x.moveUp();
+                        }
+                    }
+
                 }
             }
         }

@@ -18,6 +18,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 import javafx.animation.PauseTransition;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.Lighting;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
@@ -27,7 +30,7 @@ public class GameStart extends Application {
 
     private double t = 0;
 
-    private Player player = new Player(300, 750, 40, 40, "player", Color.BLUE);
+    private Player player = new Player(300, 750);
     boolean upPressed, downPressed, leftPressed, rightPressed;
 
     private Parent createContent() {
@@ -41,11 +44,11 @@ public class GameStart extends Application {
             }
         };
 
-        Enemy e1 = new Enemy(100, 100, "enemy", Color.RED);
-        Enemy e2 = new Enemy(200, 100, "enemy", Color.RED);
-        Enemy e3 = new Enemy(300, 100, "enemy", Color.RED);
-        Enemy e4 = new Enemy(400, 100, "enemy", Color.RED);
-        Enemy e5 = new Enemy(500, 100, "enemy", Color.RED);
+        Enemy e1 = new Enemy(100, 100);
+        Enemy e2 = new Enemy(200, 100);
+        Enemy e3 = new Enemy(300, 100);
+        Enemy e4 = new Enemy(400, 100);
+        Enemy e5 = new Enemy(500, 100);
         root.getChildren().addAll(e1, e2, e3, e4, e5);
 
         timer.start();
@@ -76,7 +79,6 @@ public class GameStart extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Scene scene = new Scene(createContent());
-
         scene.setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case A:
@@ -119,33 +121,11 @@ public class GameStart extends Application {
         });
 
         scene.setOnMouseClicked(e -> {
-            Line line = new Line(e.getX(), e.getY(), player.getX(), player.getY());
-            Line line2 = new Line(player.getX(), player.getY(), player.getX() + 100, player.getY());
-
-//            double angle1 = Math.atan2(line.getEndY() - line.getStartY(), line.getEndX() - line.getStartX());
-//            double angle2 = Math.atan2(line2.getEndY() - line2.getStartY(), line2.getEndX() - line2.getStartX());
-            double angle = calcAngle(line.getStartX(), line.getEndX(), line2.getStartX(), line2.getEndX(), line.getStartY(), line.getEndY(), line2.getStartY(), line2.getEndY());
-            Attack a1 = new Attack((int) player.getX(), (int) player.getY(), "enemy", Color.RED);
-            a1.setRotate(angle * 270);
-            root.getChildren().addAll(line, line2, a1);
-            PauseTransition hideCircle = new PauseTransition(Duration.seconds(1));
-            hideCircle.setOnFinished(eh -> {
-                a1.setVisible(false);
-                Sprite.collisions.remove(a1);
-                line.setVisible(false);
-                line2.setVisible(false);
-            });
-            hideCircle.play();
+            player.attack(e);
         });
 
         stage.setScene(scene);
         stage.show();
-    }
-
-    public double calcAngle(double x1, double x2, double x3, double x4, double y1, double y2, double y3, double y4) {
-        double C = Math.abs(x1 - x2) / (Math.abs(y1 - y2));//used to determine angle 
-        double angle = Math.sin(C);//angle that the player is from enemy
-        return angle;
     }
 
     public static void main1(String[] args) {
