@@ -21,6 +21,12 @@ import javafx.animation.PauseTransition;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Lighting;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
@@ -49,7 +55,9 @@ public class GameStart extends Application {
         Enemy e3 = new Enemy(300, 100);
         Enemy e4 = new Enemy(400, 100);
         Enemy e5 = new Enemy(500, 100);
-        root.getChildren().addAll(e1, e2, e3, e4, e5);
+        Wall wall = new Wall(32, 313, 516, 270);
+
+        root.getChildren().addAll(e1, e2, e3, e4, e5, wall);
 
         timer.start();
 
@@ -57,23 +65,7 @@ public class GameStart extends Application {
     }
 
     private void update() {
-        t += 0.016;
-        //Player Movement
-        if (upPressed) {
-            player.moveUp();
-        }
-        if (leftPressed) {
-            player.moveLeft();
-        }
-        if (rightPressed) {
-            player.moveRight();
-        }
-        if (downPressed) {
-            player.moveDown();
-        }
-        if (t > 2) {
-            t = 0;
-        }
+
     }
 
     @Override
@@ -82,33 +74,33 @@ public class GameStart extends Application {
         scene.setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case A:
-                    leftPressed = true;
+                    player.leftPressed = true;
                     break;
                 case D:
-                    rightPressed = true;
+                    player.rightPressed = true;
                     break;
                 case W:
-                    upPressed = true;
+                    player.upPressed = true;
                     break;
                 case S:
-                    downPressed = true;
+                    player.downPressed = true;
                     break;
-               
+
             }
         });
         scene.setOnKeyReleased(e -> {
             switch (e.getCode()) {
                 case A:
-                    leftPressed = false;
+                    player.leftPressed = false;
                     break;
                 case D:
-                    rightPressed = false;
+                    player.rightPressed = false;
                     break;
                 case W:
-                    upPressed = false;
+                    player.upPressed = false;
                     break;
                 case S:
-                    downPressed = false;
+                    player.downPressed = false;
                     break;
             }
         });
@@ -123,6 +115,7 @@ public class GameStart extends Application {
 
         scene.setOnMouseClicked(e -> {
             player.attack(e);
+            System.out.println(e.getX() + " " + e.getY());
         });
 
         stage.setScene(scene);

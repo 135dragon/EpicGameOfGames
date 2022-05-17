@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.util.Duration;
 import java.util.Random;
+
 /**
  *
  * @author 14048
@@ -18,7 +19,7 @@ import java.util.Random;
 public class Enemy extends Sprite {
 
     public Enemy(int x, int y) {
-        super(x, y);
+        super(x, y, 30, 40);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -41,11 +42,10 @@ public class Enemy extends Sprite {
     double xDist = Math.abs(this.getX() - playerX);
     double yDist = Math.abs(this.getY() - playerY);
     Random rand = new Random();
-    
 
     //double angle = Math.sin(C);//angle that the player is from enemy
     private void update() {
-    	double xDist = Math.abs(this.getX() - playerX);
+        double xDist = Math.abs(this.getX() - playerX);
         double yDist = Math.abs(this.getY() - playerY);
         if (dead) {
             if (!this.getImage().equals(deadAnimation)) {
@@ -66,71 +66,56 @@ public class Enemy extends Sprite {
             playerY = x.getY();
 
         }
-        
 
         //ENEMY AI
-        System.out.println(yDist);
-        if(xDist<300 && yDist<300) {
-        	aware();
+//        System.out.println(yDist);
+        if (xDist < 300 && yDist < 300) {
+            aware();
+        } else {
+            unaware();
         }
-        else {
-        	unaware();
-        }
-        	   /**
-		        if (playerY > this.getY()) {
-		            this.moveDown();
-		        }
-		        if (playerY < this.getY()) {
-		            this.moveUp();
-		        }
-		        if (playerX > this.getX()) {
-		            this.moveRight();
-		        }
-		        if (playerX < this.getX()) {
-		            this.moveLeft();
-		        }
-        **/
-        
-        
-       // Enemy POV (visibility)
-        
-        for (Sprite x : POV) {
-        	if(x != this) {
-        		 if (x.intersects(this.getBoundsInParent())) {
-                     double differenceX = x.getX() - this.getX();
-                     double differenceY = x.getY() - this.getY();
-                     if (differenceX > 10) {//will stop enemies and players from colliding, unless walked into for now
-                         while (x.intersects(this.getBoundsInParent())) {
-                        	 
-                        	 
-                         }
-                     }
-        	
-        }
-        	}
-        }
-        	
-        
-       
-        
-        // Collisions
+        /**
+         * if (playerY > this.getY()) { this.moveDown(); } if (playerY < this.getY()) {
+         * this.moveUp();
+         * }
+         * if (playerX > this.getX()) { this.moveRight(); } if (playerX <
+         * this.getX()) { this.moveLeft(); }
+         *
+         */
 
+        // Enemy POV (visibility)
+//        for (Sprite x : POV) {
+//            if (x != this) {
+//                if (x.intersects(this.getBoundsInParent())) {
+//                    double differenceX = x.getX() - this.getX();
+//                    double differenceY = x.getY() - this.getY();
+//                    if (differenceX > 10) {//will stop enemies and players from colliding, unless walked into for now
+//                        while (x.intersects(this.getBoundsInParent())) {
+//
+//                        }
+//                    }
+//
+//                }
+//            }
+//        }
+
+        // Collisions
         for (Sprite x : collisions) {
             if (x != this) {
                 if (x.intersects(this.getBoundsInParent())) {
                     double differenceX = x.getX() - this.getX();
                     double differenceY = x.getY() - this.getY();
-                    if (differenceX > 10) {//will stop enemies and players from colliding, unless walked into for now
-                        while (x.intersects(this.getBoundsInParent())) {
-                            this.moveLeft();
-                            x.moveRight();
-                        }
+                    if (differenceX > 1) {//will stop enemies and players from colliding, unless walked into for now
+//                        while (x.intersects(this.getBoundsInParent())) {
+                        this.moveLeft();
+                        x.moveRight();
+//                        }
                     }
-                    if (differenceX < -10) {
-                        while (x.intersects(this.getBoundsInParent())) {
-                            this.moveRight();
-                            x.moveLeft();
-                        }
+                    if (differenceX < -1) {
+//                        while (x.intersects(this.getBoundsInParent())) {
+                        this.moveRight();
+                        x.moveLeft();
+//                        }
                     }
                     if (differenceY > 5) {
                         while (x.intersects(this.getBoundsInParent())) {
@@ -149,33 +134,34 @@ public class Enemy extends Sprite {
             }
         }
     }
+
     //enemy unaware
     public void unaware() {
-    	int unawareDirection = rand.nextInt(5);
-    	switch(unawareDirection) {
-    	case 1:
-    		this.moveLeft();
-    		unaware();
-    		break;
-    	case 2:
-    		this.moveRight();
-    		unaware();
-    		break;
-    	case 3:
-    		this.moveUp();
-    		unaware();
-    		break;
-    	case 4:
-    		this.moveDown();
-    		unaware();
-    		break;
-    	}
-    	
+        int unawareDirection = rand.nextInt(4);
+        switch (unawareDirection) {
+            case 0:
+                this.moveLeft();
+//                unaware();
+                break;
+            case 1:
+                this.moveRight();
+//                unaware();
+                break;
+            case 2:
+                this.moveUp();
+//                unaware();
+                break;
+            case 3:
+                this.moveDown();
+//                unaware();
+                break;
+        }
+
     }
-    
+
     //enemy aware
     public void aware() {
-    	if (playerY > this.getY()) {
+        if (playerY > this.getY()) {
             this.moveDown();
         }
         if (playerY < this.getY()) {
@@ -188,7 +174,7 @@ public class Enemy extends Sprite {
             this.moveLeft();
         }
     }
-    
+
     public void setSpeed(double speed) {
         this.speed = speed;
     }

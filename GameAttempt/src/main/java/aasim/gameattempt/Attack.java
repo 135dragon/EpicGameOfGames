@@ -27,7 +27,7 @@ public class Attack extends Sprite {
     MouseEvent e;
 
     public Attack(double x, double y, Sprite owner, MouseEvent e) {
-        super(x, y);
+        super(x, y, 60, 20);
         Sprite.collisions.remove(this);
         width = 60;
         height = 20;
@@ -82,7 +82,6 @@ public class Attack extends Sprite {
         for (Sprite x : collisions) {
             if (x != this && x != owner && x.getClass() != this.getClass()) {
                 if (x.intersects(this.getBoundsInParent())) {
-//                    x.setImage(deadAnimation);
                     x.dead = true;
                     counter = true;
                     break;
@@ -101,7 +100,7 @@ public class Attack extends Sprite {
         if (x1 < this.getX()) {
             angle += 180;
         }
-        System.out.println(angle);
+//        System.out.println(angle);
         if (Double.isNaN(angle)) {
             if (e.getY() < owner.getY()) {
                 angle = -90;

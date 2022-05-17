@@ -29,14 +29,16 @@ public class Sprite extends ImageView {
     public static ArrayList<Sprite> collisions = new ArrayList<>();
     public static ArrayList<Sprite> POV = new ArrayList<>();
     public static ArrayList<Sprite> players = new ArrayList<Sprite>();
-    
+
     FileInputStream fis;
     Image img;
     Image leftWalk, rightWalk, deadAnimation;
     boolean stunned = false;
     int height = 40, width = 30; //Aspect ratio is 4/3
 
-    Sprite(double x, double y) {
+    Sprite(double x, double y, int width, int height) {
+        this.height = height;
+        this.width = width;
 //        super(new Image("https://w7.pngwing.com/pngs/34/292/png-transparent-sunglasses-thug-life-cool-miscellaneous-angle-white.png")); //random image, change later
         try {
             this.fis = new FileInputStream("char_walk_left.gif");
@@ -55,6 +57,24 @@ public class Sprite extends ImageView {
         collisions.add(this);
         setX(x);
         setY(y);
+    }
+
+    Sprite(double x, double y, double x2, double y2) {
+        width = (int) Math.abs(x - x2);
+        height = (int) Math.abs(y - y2);
+        
+        collisions.add(this);
+        if (x < x2) {
+            setX(x);
+        } else {
+            setX(x2);
+        }
+
+        if (y < y2) {
+            setY(y);
+        } else {
+            setY(y2);
+        }
     }
 
     void moveLeft() {
@@ -87,6 +107,4 @@ public class Sprite extends ImageView {
         setY(getY() + speed);
     }
 
-	
 }
-
