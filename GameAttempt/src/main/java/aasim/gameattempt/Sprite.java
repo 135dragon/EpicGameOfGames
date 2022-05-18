@@ -34,7 +34,7 @@ public class Sprite extends ImageView {
     Image img;
     Image leftWalk, rightWalk, deadAnimation;
     boolean stunned = false;
-    int height = 40, width = 30; //Aspect ratio is 4/3
+    int height = 16, width = 16; //Aspect ratio is 4/3
 
     Sprite(double x, double y, int width, int height) {
         this.height = height;
@@ -59,22 +59,10 @@ public class Sprite extends ImageView {
         setY(y);
     }
 
-    Sprite(double x, double y, double x2, double y2) {
-        width = (int) Math.abs(x - x2);
-        height = (int) Math.abs(y - y2);
-        
+    Sprite(double x, double y) {
         collisions.add(this);
-        if (x < x2) {
-            setX(x);
-        } else {
-            setX(x2);
-        }
-
-        if (y < y2) {
-            setY(y);
-        } else {
-            setY(y2);
-        }
+        setX(x);
+        setY(y);
     }
 
     void moveLeft() {

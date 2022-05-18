@@ -21,12 +21,12 @@ public class Wall extends Sprite {
 
     Rectangle hitbox;
 
-    public Wall(double x, double y, double x2, double y2) {
-        super(x, y, x2, y2);
+    public Wall(double x, double y) {
+        super(x, y);
         try {
 
             this.fis = new FileInputStream("wall.jpg");
-            img = new Image(fis, width, height, false, true);
+            img = new Image(fis, 16, 16, false, true);
             this.setImage(img);
 
         } catch (FileNotFoundException ex) {
