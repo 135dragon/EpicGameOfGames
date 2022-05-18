@@ -7,3 +7,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     Author     : 14048
 */
 
+.label{
+    -fx-text-fill: white;
+    -fx-padding: 3;
+}
+VBox{
+    -fx-background-color: #2f4f4f;
+    -fx-opacity: 0.9;
+}
+#title{
+    -fx-font: 24px Calibri;
+}
+#undertitle{
+
+}
+#button{
+
+}
+#button:hover{
+    -fx-background-color: grey;
+}
+HBox{
+    -fx-text-align: center;
+}

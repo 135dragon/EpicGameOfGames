@@ -8,7 +8,6 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.stage.Screen;
 import javafx.util.Duration;
 import java.util.Random;
 
@@ -36,8 +35,6 @@ public class Enemy extends Sprite {
 
     boolean goLeft = true;
     boolean goUp = true;
-    double screenX = Screen.getPrimary().getBounds().getWidth();
-    double screenY = Screen.getPrimary().getBounds().getHeight();
     double playerX, playerY;
     double xDist = Math.abs(this.getX() - playerX);
     double yDist = Math.abs(this.getY() - playerY);
