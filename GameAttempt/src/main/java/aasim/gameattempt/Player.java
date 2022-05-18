@@ -3,6 +3,7 @@ package aasim.gameattempt;
 import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -15,6 +16,8 @@ public class Player extends Sprite {
     public boolean leftPressed;
     public boolean rightPressed;
     public boolean downPressed;
+
+    double startX, startY;
 
     Player(double x, double y) {
 
@@ -29,11 +32,13 @@ public class Player extends Sprite {
                 update();
             }
         };
-
+        startX = x;
+        startY = y;
         timer.start();
     }
 
     private void update() {
+
         //Death
         if (dead) {
             if (!this.getImage().equals(deadAnimation)) {
@@ -52,15 +57,25 @@ public class Player extends Sprite {
         //Player Movement
         if (upPressed) {
             this.moveUp();
+            Pane parent = (Pane) this.getParent();
+            parent.setTranslateY(parent.getTranslateY() + this.speed);
         }
         if (leftPressed) {
             this.moveLeft();
+            Pane parent = (Pane) this.getParent();
+            parent.setTranslateX(parent.getTranslateX() + this.speed);
+
         }
         if (rightPressed) {
             this.moveRight();
+            Pane parent = (Pane) this.getParent();
+            parent.setTranslateX(parent.getTranslateX() - this.speed);
         }
         if (downPressed) {
             this.moveDown();
+            Pane parent = (Pane) this.getParent();
+            parent.setTranslateY(parent.getTranslateY() - this.speed);
+
         }
 //        if (t > 2) {
 //            t = 0;

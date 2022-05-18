@@ -6,6 +6,7 @@ package aasim.gameattempt;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -26,6 +27,7 @@ public class Level extends Scene {
 
     public Level() {
         super(new Pane());
+        root.setBackground(Background.EMPTY);
         root.getChildren().add(player);
         AnimationTimer timer = new AnimationTimer() {
             @Override
