@@ -31,6 +31,7 @@ import javafx.stage.Stage;
 public class GameStart extends Application {
 
     Scene scene;
+    Sprite e1 = new Sprite(-100, 650, 30, 40);
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -77,7 +78,7 @@ public class GameStart extends Application {
             }
         };
         timer.start();
-
+        bp.getChildren().add(e1);
         //
         stage.setScene(scene);
         stage.setMaximized(true);
@@ -91,7 +92,6 @@ public class GameStart extends Application {
             stage.setMaximized(true);
             stage.show();
             timer.stop();
-
         });
         contContainer.setOnMouseClicked(eh -> {
 
@@ -106,8 +106,22 @@ public class GameStart extends Application {
 
     }
 
-    private void update() {
+    private double counter = 0;
 
+    private void update() {
+        counter += 0.012;
+        if (counter < 10) {
+            e1.moveRight();
+            System.out.println("move right");
+        }
+        if (counter >= 10) {
+            e1.moveLeft();
+            System.out.println("move left");
+        }
+        if (counter >= 20) {
+            counter = 0;
+
+        }
     }
 
     public static void main1(String[] args) {

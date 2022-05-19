@@ -26,7 +26,7 @@ public class Wall extends Sprite {
         try {
 
             this.fis = new FileInputStream("wall.jpg");
-            img = new Image(fis, 16, 16, false, true);
+            img = new Image(fis, 32, 32, false, true);
             this.setImage(img);
 
         } catch (FileNotFoundException ex) {

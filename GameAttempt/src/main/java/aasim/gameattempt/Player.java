@@ -17,6 +17,7 @@ public class Player extends Sprite {
     public boolean rightPressed;
     public boolean downPressed;
 
+    public boolean cameraUp, cameraDown, cameraLeft, cameraRight;
     double startX, startY;
 
     Player(double x, double y) {
@@ -77,6 +78,22 @@ public class Player extends Sprite {
             parent.setTranslateY(parent.getTranslateY() - this.speed);
 
         }
+        if (cameraUp) {
+            Pane parent = (Pane) this.getParent();
+            parent.setTranslateY(parent.getTranslateY() + this.speed);
+        }
+        if (cameraDown) {
+            Pane parent = (Pane) this.getParent();
+            parent.setTranslateY(parent.getTranslateY() - this.speed);
+        }
+        if (cameraLeft) {
+            Pane parent = (Pane) this.getParent();
+            parent.setTranslateX(parent.getTranslateX() + this.speed);
+        }
+        if (cameraRight) {
+            Pane parent = (Pane) this.getParent();
+            parent.setTranslateX(parent.getTranslateX() - this.speed);
+        }
 //        if (t > 2) {
 //            t = 0;
 //        }
@@ -117,11 +134,11 @@ public class Player extends Sprite {
         }
     }
 
-    public void attack(MouseEvent e) {
+    public void attack(double mouseX, double mouseY) {
         if (stunned) {
             return;
         }
-        Attack a1 = new Attack(this.getX(), this.getY(), this, e);
+        Attack a1 = new Attack(this.getX(), this.getY(), this, mouseX, mouseY);
         ((Pane) this.getScene().getRoot()).getChildren().addAll(a1);
     }
 
