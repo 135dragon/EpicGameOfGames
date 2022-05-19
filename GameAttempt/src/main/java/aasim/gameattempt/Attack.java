@@ -24,9 +24,9 @@ import javafx.util.Duration;
 public class Attack extends Sprite {
 
     Sprite owner;
-    MouseEvent e;
+    private double mouseX, mouseY;
 
-    public Attack(double x, double y, Sprite owner, MouseEvent e) {
+    public Attack(double x, double y, Sprite owner, double mouseX, double mouseY) {
         super(x, y, 60, 20);
         Sprite.collisions.remove(this);
         width = 60;
@@ -51,7 +51,9 @@ public class Attack extends Sprite {
 
         };
         //Calculate angle
-        double angle = calcAngle(e.getX(), this.getX(), this.getX(), this.getX() + 100, e.getY(), this.getY(), this.getY(), this.getY());
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
+        double angle = calcAngle(mouseX, this.getX(), this.getX(), this.getX() + 100, mouseY, this.getY(), this.getY(), this.getY());
         //Rotate attack based off of angle, center the pivot point based on player sprite.
         Rotate rotate = new Rotate(angle, owner.getX() + (owner.width / 2), owner.getY() + (owner.height / 2));
         this.getTransforms().add(rotate);
@@ -102,9 +104,9 @@ public class Attack extends Sprite {
         }
 //        System.out.println(angle);
         if (Double.isNaN(angle)) {
-            if (e.getY() < owner.getY()) {
+            if (mouseY < owner.getY()) {
                 angle = -90;
-            } else if (e.getY() > owner.getY()) {
+            } else if (mouseY > owner.getY()) {
                 angle = -90;
             }
         }

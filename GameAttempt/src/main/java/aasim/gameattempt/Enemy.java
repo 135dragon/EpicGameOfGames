@@ -95,7 +95,6 @@ public class Enemy extends Sprite {
 //                }
 //            }
 //        }
-
         // Collisions
         for (Sprite x : collisions) {
             if (x != this) {
