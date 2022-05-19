@@ -24,6 +24,7 @@ public class Player extends Sprite {
 
         super(x, y, 30, 40); //w:h is 3:4
         Sprite.players.add(this);
+        Sprite.collisions.add(this);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -105,28 +106,25 @@ public class Player extends Sprite {
                     double differenceX = x.getX() - this.getX();
                     double differenceY = x.getY() - this.getY();
                     if (differenceX > 1) {//will stop enemies and players from colliding, unless walked into for now
-//                        while (x.intersects(this.getBoundsInParent())) {
                         this.moveLeft();
+                        this.moveLeft();
+
                         x.moveRight();
-//                        }
                     }
                     if (differenceX < -1) {
-//                        while (x.intersects(this.getBoundsInParent())) {
+                        this.moveRight();
                         this.moveRight();
                         x.moveLeft();
-//                        }
                     }
                     if (differenceY > 5) {
-                        while (x.intersects(this.getBoundsInParent())) {
-                            this.moveUp();
-                            x.moveDown();
-                        }
+                        this.moveUp();
+                        this.moveUp();
+                        x.moveDown();
                     }
                     if (differenceY < -5) {
-                        while (x.intersects(this.getBoundsInParent())) {
-                            this.moveDown();
-                            x.moveUp();
-                        }
+                        this.moveDown();
+                        this.moveDown();
+                        x.moveUp();
                     }
 
                 }
@@ -139,7 +137,9 @@ public class Player extends Sprite {
             return;
         }
         Attack a1 = new Attack(this.getX(), this.getY(), this, mouseX, mouseY);
-        ((Pane) this.getScene().getRoot()).getChildren().addAll(a1);
+
+        ((Pane) this.getScene().getRoot()).getChildren().add(a1);
+
     }
 
 }

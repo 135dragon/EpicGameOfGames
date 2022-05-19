@@ -29,6 +29,7 @@ public class Sprite extends ImageView {
     public static ArrayList<Sprite> collisions = new ArrayList<>();
     public static ArrayList<Sprite> POV = new ArrayList<>();
     public static ArrayList<Sprite> players = new ArrayList<Sprite>();
+    public static ArrayList<Sprite> enemies = new ArrayList<Sprite>();
 
     FileInputStream fis;
     Image img;
@@ -54,13 +55,11 @@ public class Sprite extends ImageView {
             Logger.getLogger(Sprite.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        collisions.add(this);
         setX(x);
         setY(y);
     }
 
     Sprite(double x, double y) {
-        collisions.add(this);
         setX(x);
         setY(y);
     }

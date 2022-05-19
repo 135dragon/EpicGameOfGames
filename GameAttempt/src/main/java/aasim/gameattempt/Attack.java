@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
@@ -25,12 +26,15 @@ public class Attack extends Sprite {
 
     Sprite owner;
     private double mouseX, mouseY;
+    Rectangle hitbox;
 
     public Attack(double x, double y, Sprite owner, double mouseX, double mouseY) {
         super(x, y, 60, 20);
-        Sprite.collisions.remove(this);
+        //Width determines how 'long' the attack is, height determines how wide it is. 
+        //Dumb, I know. Just deal with it
         width = 60;
         height = 20;
+        hitbox = new Rectangle(x, y, 0, height);
         //Set the image
         try {
             fis = new FileInputStream("swordthrust.gif");
@@ -50,6 +54,7 @@ public class Attack extends Sprite {
             }
 
         };
+
         //Calculate angle
         this.mouseX = mouseX;
         this.mouseY = mouseY;
@@ -57,6 +62,7 @@ public class Attack extends Sprite {
         //Rotate attack based off of angle, center the pivot point based on player sprite.
         Rotate rotate = new Rotate(angle, owner.getX() + (owner.width / 2), owner.getY() + (owner.height / 2));
         this.getTransforms().add(rotate);
+        hitbox.getTransforms().add(rotate);
         //
         this.owner = owner;
         timer.start();
@@ -75,22 +81,52 @@ public class Attack extends Sprite {
         hide.play();
 
     }
-    boolean counter = false;
+    private boolean counter = false; //Counter to detect if an enemy has already died (and if has, don't kill any more). Disable if you want attacks to 'pierce' enemies
+    private double t = 0;
 
     private void update() {
+        t += 0.012;
+
         if (counter) {
+//            hitbox.setWidth(0);
             return;
         }
+        //For every frame in attack gif, change the hitbox
+        //SwordThrust has 7 frames and takes 0.7 seconds to complete, so each frame is visible for only 0.1 seconds
+
+        if (t >= 0 && t <= 0.1) {
+            //Hitbox change
+            hitbox.setWidth(0);
+        } else if (t >= 0.1 && t <= 0.2) {
+            //Hitbox change
+            hitbox.setWidth(0.3 * this.width);
+        } else if (t >= 0.2 && t <= 0.3) {
+            //Hitbox change
+            hitbox.setWidth(0.5 * this.width);
+        } else if (t >= 0.3 && t <= 0.4) {
+            //Hitbox change
+            hitbox.setWidth(1 * this.width);
+        } else if (t >= 0.4 && t <= 0.5) {
+            //Hitbox change
+            hitbox.setWidth(0.5 * this.width);
+        } else if (t >= 0.5 && t <= 0.6) {
+            //Hitbox change
+            hitbox.setWidth(0.3 * this.width);
+        } else if (t >= 0.6 && t <= 0.7) {
+            //Hitbox change
+            hitbox.setWidth(0 * this.width);
+        }
+
+        //
         for (Sprite x : collisions) {
             if (x != this && x != owner && x.getClass() != this.getClass()) {
-                if (x.intersects(this.getBoundsInParent())) {
+                if (x.intersects(hitbox.getBoundsInParent())) {
                     x.dead = true;
                     counter = true;
                     break;
                 }
             }
         }
-
     }
 
     private double calcAngle(double x1, double x2, double x3, double x4, double y1, double y2, double y3, double y4) {

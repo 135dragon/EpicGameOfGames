@@ -28,7 +28,8 @@ public class Enemy extends Sprite {
                 update();
             }
         };
-
+        Sprite.enemies.add(this);
+        Sprite.collisions.add(this);
         timer.start();
         setSpeed(Math.random());
     }

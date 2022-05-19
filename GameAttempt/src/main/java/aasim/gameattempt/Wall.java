@@ -23,6 +23,7 @@ public class Wall extends Sprite {
 
     public Wall(double x, double y) {
         super(x, y);
+        Sprite.collisions.add(this);
         try {
 
             this.fis = new FileInputStream("wall.jpg");

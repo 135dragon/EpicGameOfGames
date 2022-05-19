@@ -112,15 +112,12 @@ public class GameStart extends Application {
         counter += 0.012;
         if (counter < 10) {
             e1.moveRight();
-            System.out.println("move right");
         }
         if (counter >= 10) {
             e1.moveLeft();
-            System.out.println("move left");
         }
         if (counter >= 20) {
             counter = 0;
-
         }
     }
 
