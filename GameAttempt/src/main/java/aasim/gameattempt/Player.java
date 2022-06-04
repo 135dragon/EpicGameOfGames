@@ -2,12 +2,14 @@ package aasim.gameattempt;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Player extends Sprite {
@@ -16,6 +18,10 @@ public class Player extends Sprite {
     public boolean leftPressed;
     public boolean rightPressed;
     public boolean downPressed;
+    public double health = 100;
+    public double maxHealth = 100;
+    Rectangle currentHealth = new Rectangle(190, 40);
+    Label healthTxt = new Label("" + health);
 
     public boolean cameraUp, cameraDown, cameraLeft, cameraRight;
     double startX, startY;
@@ -138,8 +144,8 @@ public class Player extends Sprite {
         }
         Attack a1 = new Attack(this.getX(), this.getY(), this, mouseX, mouseY);
 
-        ((Pane) this.getScene().getRoot()).getChildren().add(a1);
-
+        ((Pane) this.getParent()).getChildren().add(a1);
+        addHealth(-5);
     }
 
 }

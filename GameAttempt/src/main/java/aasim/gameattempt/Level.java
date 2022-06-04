@@ -6,16 +6,26 @@ package aasim.gameattempt;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.Event;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -24,19 +34,57 @@ import javafx.stage.Stage;
  */
 public class Level extends Scene {
 
-    //The actual level itself
-    Pane root = new Pane();
+    //level menu components
+    StackPane sp = new StackPane(); //Layering Mechanism
+    Pane root = new Pane(); // The Actual Level
+    GridPane escapeMenu = new GridPane(); // Escape Menu 
+
     //Timer counter for update() loop
     private double t = 0;
     //Player
     private Player player = new Player(1024 / 2, 1024 / 2);
     //Player Controls - w  a  s  d
     boolean win = false;
+    boolean isEscapeMenu = false;
 
     public Level() {
         super(new Pane());
         root.setBackground(Background.EMPTY);
+        sp.setBackground(Background.EMPTY);
+        sp.setEventDispatcher(root.eventDispatcherProperty().get());
         root.getChildren().add(player);
+        //Escape Menu
+        escapeMenu.setVisible(false);
+        escapeMenu.setBackground(new Background(new BackgroundFill(Paint.valueOf("black"), CornerRadii.EMPTY, Insets.EMPTY)));
+        escapeMenu.setOpacity(0.9);
+        Label contBtn = new Label("Continue");
+        Label exitBtn = new Label("Exit");
+        VBox buttonContainer = new VBox(contBtn, exitBtn);
+        escapeMenu.getChildren().add(buttonContainer);
+        contBtn.setOnMouseClicked(eh -> {
+            isEscapeMenu = false;
+            isEscapeMenu();
+        });
+        exitBtn.setOnMouseClicked(eh -> {
+            System.exit(0);
+        });
+
+        buttonContainer.setPadding(new Insets(10));
+        buttonContainer.setAlignment(Pos.CENTER);
+        escapeMenu.setAlignment(Pos.CENTER);
+        //Health Bar
+        StackPane hb = new StackPane();
+        Rectangle background = new Rectangle(200, 50);
+        background.setFill(Paint.valueOf("black"));
+        player.currentHealth.setTranslateX(5);
+        player.currentHealth.setTranslateY(-5);
+        player.currentHealth.setFill(Paint.valueOf("red"));
+
+        player.healthTxt.setTranslateX(10);
+        player.healthTxt.setTranslateY(-5);
+        hb.getChildren().addAll(background, player.currentHealth, player.healthTxt);
+        hb.setAlignment(Pos.BOTTOM_LEFT);
+        //
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -50,7 +98,9 @@ public class Level extends Scene {
         setListeners();
         //Build the level (Add Enemies, Walls / More tiles)
         buildLevel();
-        this.setRoot(root);
+        sp.getChildren().addAll(root, hb, escapeMenu);
+
+        this.setRoot(sp);
     }
 
     private void setListeners() {
@@ -80,6 +130,10 @@ public class Level extends Scene {
                     break;
                 case RIGHT:
                     player.cameraRight = true;
+                    break;
+                case ESCAPE:
+                    isEscapeMenu = !isEscapeMenu;
+                    isEscapeMenu();
                     break;
             }
         });
@@ -188,5 +242,17 @@ public class Level extends Scene {
         }
 
         return false;
+    }
+
+    private void isEscapeMenu() {
+
+        if (isEscapeMenu) {
+            escapeMenu.setVisible(true);
+            System.out.println("yes");
+        } else {
+            escapeMenu.setVisible(false);
+            System.out.println("no");
+        }
+
     }
 }

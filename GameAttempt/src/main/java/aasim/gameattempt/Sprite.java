@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import java.util.*;
+import javafx.scene.paint.Paint;
 
 /**
  *
@@ -36,8 +37,14 @@ public class Sprite extends ImageView {
     Image leftWalk, rightWalk, deadAnimation;
     boolean stunned = false;
     int height = 16, width = 16; //Aspect ratio is 4/3
+//
+    public double health = 100;
+    public double maxHealth = 100;
+    Rectangle currentHealth = new Rectangle(50, 10);
 
+    //
     Sprite(double x, double y, int width, int height) {
+        currentHealth.setFill(Paint.valueOf("red"));
         this.height = height;
         this.width = width;
 //        super(new Image("https://w7.pngwing.com/pngs/34/292/png-transparent-sunglasses-thug-life-cool-miscellaneous-angle-white.png")); //random image, change later
@@ -94,4 +101,16 @@ public class Sprite extends ImageView {
         setY(getY() + speed);
     }
 
+    public void addHealth(int add) {
+        health += add;
+        if (health > maxHealth) {
+            health = maxHealth;
+        }
+        if (health <= 0) {
+            this.dead = true;
+        }
+        // health / maxHealth
+        double percentage = health / maxHealth;
+        currentHealth.setWidth(50 * percentage);
+    }
 }

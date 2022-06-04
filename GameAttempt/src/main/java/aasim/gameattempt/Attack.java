@@ -121,7 +121,7 @@ public class Attack extends Sprite {
         for (Sprite x : collisions) {
             if (x != this && x != owner && x.getClass() != this.getClass()) {
                 if (x.intersects(hitbox.getBoundsInParent())) {
-                    x.dead = true;
+                    x.addHealth(-35);
                     counter = true;
                     break;
                 }
